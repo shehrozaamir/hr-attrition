@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HR Ledger — Employee Attrition Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="masthead__mark">
+      <svg class="masthead__seal" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" />
+        <circle cx="20" cy="20" r="13" />
+        <path d="M20 10 L20 30 M10 20 L30 20" />
+      </svg>
+      <div>
+        <h1>HR Ledger</h1>
+        <p class="masthead__tag">An intelligence desk for employee retention & attrition risk</p>
+      </div>
+    </div>
+    <div class="masthead__status" id="apiStatus">
+      <span class="dot" id="apiDot"></span>
+      <span id="apiStatusText">checking service…</span>
+    </div>
+  </header>
+
+  <form class="ledger" id="riskForm" novalidate>
+
+    <!-- SECTION 01: Employee Profile -->
+    <fieldset class="ledger__section">
+      <legend>01 — Employee Profile</legend>
+
+      <div class="row">
+        <label for="Age">Age</label>
+        <div class="field">
+          <input type="number" id="Age" name="Age" min="18" max="65" step="1" value="32" required />
+          <span class="unit">years</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="Gender">Gender</label>
+        <div class="field">
+          <select id="Gender" name="Gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="MaritalStatus">Marital status</label>
+        <div class="field">
+          <select id="MaritalStatus" name="MaritalStatus" required>
+            <option value="Single">Single</option>
+            <option value="Married" selected>Married</option>
+            <option value="Divorced">Divorced</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="DistanceFromHome">Distance from home</label>
+        <div class="field">
+          <input type="number" id="DistanceFromHome" name="DistanceFromHome" min="1" max="50" step="1" value="5" required />
+          <span class="unit">km</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="Education">Education level (1–5)</label>
+        <div class="field">
+          <input type="number" id="Education" name="Education" min="1" max="5" step="1" value="3" required />
+          <span class="unit">level</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="EducationField">Education field</label>
+        <div class="field">
+          <select id="EducationField" name="EducationField" required>
+            <option value="Life Sciences" selected>Life Sciences</option>
+            <option value="Medical">Medical</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Technical Degree">Technical Degree</option>
+            <option value="Human Resources">Human Resources</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- SECTION 02: Role & Department -->
+    <fieldset class="ledger__section">
+      <legend>02 — Role & Assignment</legend>
+
+      <div class="row">
+        <label for="Department">Department</label>
+        <div class="field">
+          <select id="Department" name="Department" required>
+            <option value="Research & Development" selected>Research & Development</option>
+            <option value="Sales">Sales</option>
+            <option value="Human Resources">Human Resources</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="JobRole">Job role</label>
+        <div class="field">
+          <select id="JobRole" name="JobRole" required>
+            <option value="Research Scientist" selected>Research Scientist</option>
+            <option value="Laboratory Technician">Laboratory Technician</option>
+            <option value="Manufacturing Director">Manufacturing Director</option>
+            <option value="Healthcare Representative">Healthcare Representative</option>
+            <option value="Manager">Manager</option>
+            <option value="Research Director">Research Director</option>
+            <option value="Sales Executive">Sales Executive</option>
+            <option value="Sales Representative">Sales Representative</option>
+            <option value="Human Resources">Human Resources</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="JobLevel">Job level (1–5)</label>
+        <div class="field">
+          <input type="number" id="JobLevel" name="JobLevel" min="1" max="5" step="1" value="2" required />
+          <span class="unit">level</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="BusinessTravel">Business travel</label>
+        <div class="field">
+          <select id="BusinessTravel" name="BusinessTravel" required>
+            <option value="Travel_Rarely" selected>Travel Rarely</option>
+            <option value="Travel_Frequently">Travel Frequently</option>
+            <option value="Non-Travel">Non-Travel</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="OverTime">Overtime commitment</label>
+        <div class="field">
+          <select id="OverTime" name="OverTime" required>
+            <option value="No" selected>No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- SECTION 03: Compensation & Experience -->
+    <fieldset class="ledger__section">
+      <legend>03 — Compensation & History</legend>
+
+      <div class="row">
+        <label for="MonthlyIncome">Monthly income</label>
+        <div class="field">
+          <span class="unit unit--prefix">$</span>
+          <input type="number" id="MonthlyIncome" name="MonthlyIncome" min="1000" step="100" value="5000" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="DailyRate">Daily rate</label>
+        <div class="field">
+          <span class="unit unit--prefix">$</span>
+          <input type="number" id="DailyRate" name="DailyRate" min="100" step="10" value="800" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="HourlyRate">Hourly rate</label>
+        <div class="field">
+          <span class="unit unit--prefix">$</span>
+          <input type="number" id="HourlyRate" name="HourlyRate" min="30" max="100" step="1" value="65" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="MonthlyRate">Monthly rate</label>
+        <div class="field">
+          <span class="unit unit--prefix">$</span>
+          <input type="number" id="MonthlyRate" name="MonthlyRate" min="1000" step="100" value="14000" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="PercentSalaryHike">Salary hike percent</label>
+        <div class="field">
+          <input type="number" id="PercentSalaryHike" name="PercentSalaryHike" min="11" max="25" step="1" value="14" required />
+          <span class="unit">%</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="StockOptionLevel">Stock option level (0–3)</label>
+        <div class="field">
+          <input type="number" id="StockOptionLevel" name="StockOptionLevel" min="0" max="3" step="1" value="1" required />
+          <span class="unit">level</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="NumCompaniesWorked">Prior companies worked</label>
+        <div class="field">
+          <input type="number" id="NumCompaniesWorked" name="NumCompaniesWorked" min="0" max="15" step="1" value="2" required />
+          <span class="unit">count</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="TotalWorkingYears">Total working experience</label>
+        <div class="field">
+          <input type="number" id="TotalWorkingYears" name="TotalWorkingYears" min="0" max="45" step="1" value="8" required />
+          <span class="unit">years</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="TrainingTimesLastYear">Trainings last year</label>
+        <div class="field">
+          <input type="number" id="TrainingTimesLastYear" name="TrainingTimesLastYear" min="0" max="10" step="1" value="3" required />
+          <span class="unit">times</span>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- SECTION 04: Tenure & Management -->
+    <fieldset class="ledger__section">
+      <legend>04 — Tenure & Management</legend>
+
+      <div class="row">
+        <label for="YearsAtCompany">Years at company</label>
+        <div class="field">
+          <input type="number" id="YearsAtCompany" name="YearsAtCompany" min="0" max="40" step="1" value="5" required />
+          <span class="unit">years</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="YearsInCurrentRole">Years in current role</label>
+        <div class="field">
+          <input type="number" id="YearsInCurrentRole" name="YearsInCurrentRole" min="0" max="40" step="1" value="3" required />
+          <span class="unit">years</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="YearsSinceLastPromotion">Years since last promotion</label>
+        <div class="field">
+          <input type="number" id="YearsSinceLastPromotion" name="YearsSinceLastPromotion" min="0" max="30" step="1" value="1" required />
+          <span class="unit">years</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="YearsWithCurrManager">Years with current manager</label>
+        <div class="field">
+          <input type="number" id="YearsWithCurrManager" name="YearsWithCurrManager" min="0" max="30" step="1" value="3" required />
+          <span class="unit">years</span>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- SECTION 05: Workplace Engagement & Ratings -->
+    <fieldset class="ledger__section">
+      <legend>05 — Engagement & Satisfaction Ratings</legend>
+
+      <div class="row">
+        <label for="EnvironmentSatisfaction">Environment satisfaction (1–4)</label>
+        <div class="field">
+          <input type="number" id="EnvironmentSatisfaction" name="EnvironmentSatisfaction" min="1" max="4" step="1" value="3" required />
+          <span class="unit">scale</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="JobSatisfaction">Job satisfaction (1–4)</label>
+        <div class="field">
+          <input type="number" id="JobSatisfaction" name="JobSatisfaction" min="1" max="4" step="1" value="3" required />
+          <span class="unit">scale</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="JobInvolvement">Job involvement (1–4)</label>
+        <div class="field">
+          <input type="number" id="JobInvolvement" name="JobInvolvement" min="1" max="4" step="1" value="3" required />
+          <span class="unit">scale</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="RelationshipSatisfaction">Relationship satisfaction (1–4)</label>
+        <div class="field">
+          <input type="number" id="RelationshipSatisfaction" name="RelationshipSatisfaction" min="1" max="4" step="1" value="3" required />
+          <span class="unit">scale</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="WorkLifeBalance">Work-life balance (1–4)</label>
+        <div class="field">
+          <input type="number" id="WorkLifeBalance" name="WorkLifeBalance" min="1" max="4" step="1" value="3" required />
+          <span class="unit">scale</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="PerformanceRating">Performance rating (3–4)</label>
+        <div class="field">
+          <input type="number" id="PerformanceRating" name="PerformanceRating" min="3" max="4" step="1" value="3" required />
+          <span class="unit">scale</span>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="submit-row">
+      <button type="submit" id="submitBtn">
+        <span class="btn-label">Assess attrition risk</span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
+      <p class="error-note" id="errorNote" role="alert" hidden></p>
+    </div>
+
+  </form>
+
+  <section class="verdict" id="verdict" aria-live="polite" hidden>
+    <div class="verdict__inner">
+
+      <div class="verdict__gauge">
+        <svg viewBox="0 0 200 200" class="gauge">
+          <circle class="gauge__track" cx="100" cy="100" r="86" />
+          <circle class="gauge__fill" id="gaugeFill" cx="100" cy="100" r="86" />
+          <line class="gauge__threshold" id="gaugeThreshold" x1="100" y1="14" x2="100" y2="30" />
+        </svg>
+        <div class="gauge__readout">
+          <span class="gauge__number" id="probNumber">0</span><span class="gauge__percent">%</span>
+          <span class="gauge__caption">attrition probability</span>
+        </div>
+      </div>
+
+      <div class="verdict__detail">
+        <div class="stamp-wrap">
+          <div class="stamp" id="stampBadge">
+            <span id="stampText">LOW RISK</span>
+          </div>
+        </div>
+
+        <dl class="ledger-facts">
+          <div>
+            <dt>Attrition probability</dt>
+            <dd id="factProb">—</dd>
+          </div>
+          <div>
+            <dt>Decision threshold</dt>
+            <dd id="factThreshold">—</dd>
+          </div>
+          <div>
+            <dt>Model verdict</dt>
+            <dd id="factResult">—</dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>Figures are calibrated model estimates. Recorded for HR retention intelligence.</p>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
